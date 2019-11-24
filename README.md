@@ -34,7 +34,7 @@ You can decide to change datatypes in this step as well
 
 In the background, rstudio helps you call the read.csv() or read.txt() to help you place your dataframe into a variable name. This is done by calling the function and using the assign operator like so. 
 ``` r
-mydata <- read.csv(file="c:/user/myoducments/mydata.csv", header=TRUE, sep=",")
+mydata <- read.csv(file="c:/user/mydocuments/mydata.csv", header=TRUE, sep=",")
 # Now mydata holds my dataframe
 ```
 In practice, getting the data to fit into a dataframe can be one of the most diffucult aspects of the data science lifecycle, however for our purposes it's good to begin here.
