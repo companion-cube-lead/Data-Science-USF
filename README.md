@@ -16,7 +16,7 @@ The field of data science encompasses and benefits from the domain knowledge of 
 R has a slew of useful packages for data science, among one of my favorites are
   - data.table for querying and munging data
   - ggpubr for visualization  
-  - The CARET  library which serves us a unified interface for several machine learning models 
+  - The CARET  library which serves as a unified interface for several machine learning models 
 ``` r
 # to intall libraries in R, simply run the install.packages() function on the library you would like to download
 > install.packages("data.table")
