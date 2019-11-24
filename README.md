@@ -5,6 +5,7 @@ Welcome to the Data Science @ USF Student Org Official Github Page. The purpose 
 
 # Getting Started for New Students
 The field of data science encompasses and benefits from the domain knowledge of other fields. Our org is open to any major but the tools of data science are consistent across the board. To get started in your journey, start off by downloading Python or R. These are not the only languages for data science, but they are among the most popular. 
+
 | Language | Code Base | Recommended IDE/Notebook|
 | --- | --- | --- | 
 | Python |https://www.python.org/downloads/ |https://colab.research.google.com
