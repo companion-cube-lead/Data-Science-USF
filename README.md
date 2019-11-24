@@ -73,6 +73,6 @@ mydataframe = pd.read_csv(io.BytesIO(uploaded['myfile.csv']))
 ```
 **Note:** If you close your notebook environment, the code cells will display the last code you ran in your last session. You will have to re-upload your dataset if you want to work on your notebook again.
 ## Celebration!
-Congrats! You've imported your first dataset into your development environment. Notebooks are the preferred way for data scientists to develop a it makes it easy to reproduce and share their work. We are currently developing the repositories for the challanges we'll be undertaking throughout the year. Make sure to check back often for resources on how to tackle different datasets.
+Congrats! You've imported your first dataset into your development environment. Notebooks are the preferred way for data scientists to develop, and it makes it easy to reproduce and share their work. We are currently developing the repositories for the challanges we'll be undertaking throughout the year. Make sure to check back often for resources on how to tackle different datasets.
 
 
