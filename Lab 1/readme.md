@@ -61,5 +61,7 @@ In this example, everything I do to my dataset will be done to the "my_dataframe
 3. How can I represent my findings in a readable and easy to understand way? 
 4. What questions do I need to ask about my dataset to better understand its validity and what questions am I _allowed_ to ask based on my understanding? 
 
-
+### Tasks
+1. Follow along with Zoe and get comfortable copying and getting your code to work and produce the same result 
+2. Submit your code to git (if it doesn't work, that's okay :) ) 
 
