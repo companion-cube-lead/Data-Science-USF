@@ -3,7 +3,7 @@
 You have been asked as a researcher to analyze the iris dataset which is a collection of features (columns) which descibe the lengths of different parts of a flower in a series of observations, or "examples." 
 
 ### A comment on "features" and "examples"
-As you can see, the language we are using for columns and rows (features and examples) are a bit different when approach the dataset as data scientists, because we will treat the _model_ we will be using as a "student" which is trying to predict the underlying relationship in the dataset. The rows in the dataframe represent the "examples" our "student" will use to uncover the relationship in the data
+As you can see, the language we are using for columns and rows (features and examples) are a bit different when approach the dataset as data scientists, because we will treat the _model_ we will be using as a "student" which is trying to predict the underlying relationship in the dataset. The rows in the dataframe represent the "examples" our "student" will use to uncover the underlying relationship between our features in our dataframe. 
 
 
 ### Exploratory Data Analysis 
