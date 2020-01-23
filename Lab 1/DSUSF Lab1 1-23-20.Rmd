@@ -1,0 +1,280 @@
+---
+title: "Lab 1 DS@USF 1/23/20"
+output: html_document
+---
+
+
+
+# Using R 
+We're going to approach analyzing data from a development perspective.
+
+In a basic workflow, basic steps are:
+
+- Collect data (e.g. Iris dataset, here the data is already extracted for us).  
+*Also the data has already been largely preprocessed for us, this is often not the case with real data!*
+- Preprocess as needed (how can we represent  the data in a way that makes sense).
+- Let your analysis be lead by specific questions. 
+
+We'll be leveraging the power of R as a programming language to demo how an analyst can use development methods to drill into specific questions of ttheir analysis.
+
+
+
+# What about IRIS? 
+But first, we need to think about the data we're looking at
+- What does the iris dataset represent?
+- As researchers, waht questiones should we specifically asking about how the data is transcribed? 
+- What actionable results do we intend to produce with the data for the domain? 
+
+```{r}
+head(iris, 4)
+```
+
+
+
+
+##  Installing Packages
+The general form is to use the intall.packages("") function in R
+```{r eval=FALSE}
+# We need these packages today
+install.packages("dplyr")
+install.packages("ggpubr")
+
+```
+
+
+# Loading packages 
+```{r echo=FALSE}
+library(formattable)
+```
+
+
+- Libraries represent modular units of functions we already have been developed for us to use (R is open source)
+- We'll be using them to help us munge data through our analysis 
+- The development side (reproduce and R objects)
+```{r}
+library(dplyr) #  for helping query our data
+library(ggpubr) #  for visualizations
+
+```
+
+
+
+
+# Representing Data 
+- The dataframe is one of the essential components of the R language
+- Functions are built on top of the idea that an person developing in R will be working with a dataframe
+
+```{r}
+# iris already exists in our environment, we just need to assign it to a variable for us to work with it
+my_iris_dataframe <- data.frame(iris) #  x holds iris
+```
+
+##  Get To Know Your Data
+- The levels function allows us to examine and audit all the possible unique values of a vector (column) in R
+- The $ operator allows us to access specific elements of _any_ object in R
+- What are factors? 
+```{r}
+levels(my_iris_dataframe$Species) # look of values of vector here 
+
+
+
+```
+
+# Get To Know Your Data
+- str is another function developed witht he dataframe in mind, allowing us to audit the str of our dataframe 
+1) Looking at the data structures of the columns
+2) Help us identify unique factors
+```{r}
+head(my_iris_dataframe, 2)
+
+str(my_iris_dataframe)
+
+```
+
+
+# Useful Functions in R 
+- R is developed by statisticians, so we can get some measures of center from the dataframe by just running summary on our dataframe 
+- Notice how we can get the amount of observations and variables 
+```{r}
+summary(my_iris_dataframe)
+
+# Doesn't have to be in the presentation, but specific interpretations would be nice here
+```
+
+
+# "Writing Queries" Against a Dataframe 
+- In SQL we have phrases for selecting columns and manipulating . Dplyr has similar verbs: gather, select, arrange, mutate, filter among others
+- Within the R environment, we can combine these with other functions (because everything in R is a function) to answer specific questions about our data
+- What are we doing with the filter verb here? 
+
+```{r eval=FALSE}
+
+#  Notice how simialry to SQL, we can use a verb against a 'table' and filter it as we like
+filter(my_iris_dataframe,Species=="virginica")
+```
+
+
+
+# "Writing Queries" Against a Dataframe 
+- Everything in R is an object! 
+- From the development side, we can leverage this feature to see, for example, how many observations are there of 'Virginica" (basic example) using the __length_ function
+- When we realize that everything in R is an object, we can do powerful stuff with it
+
+```{r}
+
+#  unlike in SQL, we can treat the output of this code like an object
+my_flower_table <- filter(my_iris_dataframe,Species=="virginica")
+
+count(my_flower_table) # then we can use another function to see how many flowers are 'virginica'
+
+```
+
+# "Writing Queries" Against a Dataframe 
+- In practice, we can jsut use the verbs together and structure our code more like a query
+- Because R is a functional programming language, we can use something like the pipe '%>%' to stick one object of R to another object 
+```{r}
+filter(my_iris_dataframe,Species=="virginica") %>%
+  count() 
+```
+
+
+
+
+# More Examples
+Here we ask a specific question: We want to see species of virginica which have a sepal length less than 6 units and a sepal width less than 2.7 
+```{r}
+select(my_iris_dataframe, Sepal.Length, Sepal.Width, Species) %>%
+  filter(Species=="virginica" & Sepal.Length<6 & Sepal.Width<=2.7)
+```
+
+# More Examples
+- The arrange verb is similar to 'order by' in SQL, allowing us to order by multiple columns
+```{r}
+head(arrange(my_iris_dataframe, Sepal.Length, desc(Sepal.Width)), 8)
+# What does this specifically help us achieve ?
+```
+
+# A more complex query
+- From an analysis perspective, we can use a package like dplyr to produce tables which help us drive a point home about aggregations or patterns we're detecting in our dataset
+- What are we trying to accomplish here (what's our expected table)? 
+- The summarize function allows us to combine several forms of aggregations within one larger query i.e the mean, the median 
+```{r results="hide"}
+my_iris_dataframe %>%
+  group_by(Species) %>%
+  summarise (
+  mean_petal_length =  mean(Petal.Length),
+  mean_sepal_length = mean(Sepal.Length),
+  median_sepal_width = median(Sepal.Width),
+  median_pedal_width = median(Petal.Width)
+)
+
+```
+
+
+# A more complex query
+- We also need to keep in mind that often, we will need to report our findings to a less technical audience 
+```{r echo=FALSE}
+complex_query <- my_iris_dataframe %>%
+  group_by(Species) %>%
+  summarise (
+  mean_petal_length =  mean(Petal.Length),
+  mean_sepal_length = mean(Sepal.Length),
+  median_sepal_width = median(Sepal.Width),
+  median_pedal_width = median(Petal.Width)
+)
+
+
+formattable(complex_query)
+
+#  Talk about the features of a function programming language here 
+#  Talk about what this table helps us achieve?
+```
+
+
+
+# Visualization Tools
+
+What questions may we be trying to answer as researchers for iris? 
+
+```{r}
+library(ggpubr)
+```
+
+# Visualization Tools
+- Are there signficant differences between the flowers in terms of their different measurements, does the species matter ?  
+- Are the features (columns) related to each other in a significant way? 
+- Can we predict the value of say, the petal length, based on the other features in the dataset? 
+- Can we develop a sort of taxonomy for these flowers based on historical data?
+
+```{r}
+library(ggpubr)
+# #   ggpubr is a package built on TOP of ggplot 
+```
+
+- Graphing with a programming language introduces the concept of the "grammar of data"
+- ggpubr is a wrapper built on top of ggplot. It is the parallel to 'seaborn' in Python for statistical plots
+- Practically, it helps us determine **whether a relationship exists between the features before implementing a model** 
+
+
+# Are there signficant differences between the flowers in terms of their different measurements, does the species matter ?  
+- We explore to see whether a relationship exists before we implement a model
+- This way, we attempt to gaurd against the random predictions of the model and we can justify the way we fit the model in practice and the predictions it makes 
+- We'll use the box plot to see if we can detect significant differences between the levels in our iris data
+```{r}
+plot_species_length <- ggviolin(my_iris_dataframe,
+         x = "Species",
+         y = "Sepal.Length",
+         fill = "Species",
+         palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+         add = "boxplot", add.params = list(fill='white')
+         )
+         
+
+```
+
+
+# Are there signficant differences between the flowers in terms of their different measurements, does the species matter ?  
+- What can this plot tell us? 
+
+```{r echo=FALSE}
+
+plot_species_length
+
+```
+
+
+# Sprinkle Statistics -  Does the species matter ?  
+- Remember, everything in R is an object! 
+- We compare setosa against versicolor and virginica with a comparison of means stat test
+```{r}
+compare_species <- list( c("setosa", "versicolor"), c("setosa", "virginica"))
+#  we use the list data structure to tell R how to compare the means of the species 
+plot_species_length + stat_compare_means(comparisons = compare_species, label = "p.signif")
+# + stat_compare_means(label.y = 50)
+```
+
+
+# Are the features (columns) related to each other in a significant way? 
+- Let's focus on the graph and cool it on the code for now (there are mutliple ways to get scatterplot matrices)
+- Scatterplot matrixes can be used to tease out relationships between numerical values 
+
+```{r echo=FALSE}
+my_cols <- c("#00AFBB", "#E7B800", "#FC4E07")  
+pairs(iris[,1:4], pch = 19,  cex = 0.5,
+      col = my_cols[iris$Species],
+      lower.panel=NULL)
+```
+
+# Wrapping Up
+- We can see how the role of the data scientists encompasses both the technical aspects of working with structures of data **and** interpreting our findings 
+- We draw from the world of software development to do this, recognizing the advantages of R as a functional programming language for us to flexibily manipulate our dataframe
+- We also recognize the importance of being able to reproduce our work with readable code, where we can understand and justify our analysis if we give it to someone else 
+- Visualization helps us explore and gain a better sense of our data, allowing us to use a unified grammar of graphics to talk about 'seeing' data in a unified way  
+- Munging and exploring our data with tables and plots helps us understand whether a relationship exists **before** we model our data (if necessary). Data exploration is embedded in **every part** of the data science lifecycle  
+
+# Wrapping Up
+- Upload your code to the github assignment on Canvas! Don't worry if it doesn't run (but kudos if it does!) 
+- Next time, we will use our toolsets to help us implement a regression model, and understand how regression works, to prep us for our first competition! 
+- Choose your teams by next week **No teams with the same majors allowed :)** 
+- Grad student panel
+- Move meeting time to later?
