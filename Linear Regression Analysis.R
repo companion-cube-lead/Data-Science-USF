@@ -211,6 +211,6 @@ ggp4
 # Finally, make sure to fit your final model using CARET (learn why using test, train, validate mean in the machine learning lingo)
 # more boxplots :) look at the ggpubr guides online 
 # In summary, we need more! but this is headed in the right direction
-
+# Also, make your changes on this file in git
 
 
