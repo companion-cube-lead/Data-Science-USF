@@ -214,3 +214,79 @@ ggp4
 # Also, make your changes on this file in git
 
 
+############################
+# box-plot: Sepal and petal with and lengths for each species
+# We can see a hint of a linear relation for sepal.length, petal.lenght, petal.width vs all species
+#We installed the caret package which contains functions to streamline
+#the model training process for complex regression problems.
+#CARET (short for Classification And REgression Training) 
+
+install.packages("caret")
+library(AppliedPredictiveModeling)
+transparentTheme(trans = .4)
+library(caret)
+featurePlot(x = iris[, 1:4], 
+            y = iris$Species, 
+            plot = "box", 
+            ## Pass in options to bwplot() 
+            scales = list(y = list(relation="free"),
+                          x = list(rot = 90)),  
+            layout = c(4,1 ), 
+            auto.key = list(columns = 2))
+
+#To do the Train Function we will split 60% of the iris dataframe for testing
+#and the rest of the 40% for validating the predictive model
+
+split <- createDataPartition(y = my_iris_dataframe$Petal.Length, p = 0.6, list = FALSE)
+
+#dev for development or testing (60%)
+
+dev <- my_iris_dataframe[split,]
+
+#val for validating (40%)
+
+val <- my_iris_dataframe[-split,]
+
+#We can now use the train function to test the model for Linear Regression
+
+lmFit<-train(Petal.Length~., data = dev, method = "lm")
+
+summary(lmFit)
+
+#traincontrol is another function like train that can allow crossvalidation
+
+ctrl <- trainControl(method = "cv", number = 10)
+
+
+lmCVFit <- train(Petal.Length~., data = dev, method = "lm",
+                trControl = ctrl, metric = "Rsquared")
+
+summary(lmCVFit)
+
+#We can also use caret fucntions for a residuals plot
+
+residuals <- resid(lmFit)
+
+predictedValues <- predict(lmFit)
+
+plot(dev$Petal.Length,residuals)
+
+abline(0,0)
+
+plot(dev$Petal.Length,predictedValues)
+
+#Variable Imprtance Plot
+
+varImp(lmFit)
+
+plot(varImp(lmFit))
+
+#I seem to be getting errors here
+
+predictedVal <- predict(lmFit,val)
+
+modelvalues <- data.frame(obs = dev$Petal.Length, pred=predictedVal)
+
+defaultSummary(modelvalues)
+
+
