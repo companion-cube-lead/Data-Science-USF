@@ -18,4 +18,4 @@ randomly_sample_paths <- function(path, samples){
 }
 
  # we test 
-randomly_sample_paths('../input/indoor-location-navigation/train/',5 )
+randomly_sample_paths('../input/indoor-location-navigation/train/', 5)
